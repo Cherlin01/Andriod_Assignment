@@ -73,7 +73,7 @@ public class CreateAppointment extends AppCompatActivity {
                 DateSelected = year + "-" + (month + 1) + "-" + (dayOfMonth);
                 DateSelect = year + "-" + (month + 1) + "-" + (dayOfMonth + 1);
                 try {
-                   // SelectedDateTime = dateFormat.parse(DateSelect);
+                    SelectedDateTime = dateFormat.parse(DateSelect);
                     SelectedDateTimes = dateFormat.parse(DateSelected);
                     DateSelectedFormat = dateFormat.format(SelectedDateTimes);
                 } catch (ParseException e) {
@@ -86,57 +86,58 @@ public class CreateAppointment extends AppCompatActivity {
         btnSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                time.clear();
                 AppointmentSlotDataManager appointmentSlotDataManager = new AppointmentSlotDataManager();
                 Calendar selectedDate = Calendar.getInstance();
-                if (SelectedDateTimes == null) {
-                    selectedDate = Calendar.getInstance();
-                    selectedDate.add(Calendar.DATE, 1);
-                } else
-                    selectedDate.setTime(SelectedDateTimes);
-
-
-                int Day = selectedDate.get(Calendar.DAY_OF_WEEK);
-                if (Day == Calendar.SATURDAY || Day == Calendar.SUNDAY) {
-                    Toast.makeText(CreateAppointment.this, "You cannot book an appointment on Weekends!", Toast.LENGTH_SHORT).show();
+                if (SelectedDateTime == null) {
+                    Toast.makeText(CreateAppointment.this, "Please Select a Date", Toast.LENGTH_SHORT).show();
                 } else {
-                    BookingDataManager bookingDataManager = new BookingDataManager();
-                    BookingDataModels bookings = bookingDataManager.GetBookingbyDate(DateSelectedFormat, session.getUserID());
+                    selectedDate.setTime(SelectedDateTime);
 
-                    if (bookings != null) {
-                        Toast.makeText(CreateAppointment.this, "You have an Appointment on this date!", Toast.LENGTH_SHORT).show();
+
+                    int Day = selectedDate.get(Calendar.DAY_OF_WEEK);
+                    if (Day == Calendar.SATURDAY || Day == Calendar.SUNDAY) {
+                        Toast.makeText(CreateAppointment.this, "You cannot book an appointment on Weekends!", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (appointmentSlotDataManager.GetSlotbyDate(DateSelectedFormat) == null)
-                            appointmentSlotDataManager.AddAppointmentSlot(DateSelectedFormat);
+                        BookingDataManager bookingDataManager = new BookingDataManager();
+                        BookingDataModels bookings = bookingDataManager.GetBookingbyDate(DateSelectedFormat, session.getUserID());
 
-                        AppointmentSlotDataModel appointmentSlotDataModel = appointmentSlotDataManager.GetSlotbyDate(DateSelectedFormat);
+                        if (bookings != null) {
+                            Toast.makeText(CreateAppointment.this, "You have an Appointment on this date!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (appointmentSlotDataManager.GetSlotbyDate(DateSelectedFormat) == null)
+                                appointmentSlotDataManager.AddAppointmentSlot(DateSelectedFormat);
 
-                        spinnerTime.setVisibility(View.VISIBLE);
-                        if (Integer.parseInt(appointmentSlotDataModel.getEight()) < 5) {
-                            time.add("8am-10am");
-                        }
-                        if (Integer.parseInt(appointmentSlotDataModel.getTen()) < 5) {
-                            time.add("10am - 12pm");
-                        }
-                        if (Integer.parseInt(appointmentSlotDataModel.getTwelve()) < 5) {
-                            time.add("12pm - 2pm");
-                        }
-                        if (Integer.parseInt(appointmentSlotDataModel.getTwo()) < 5) {
-                            time.add("2pm - 4pm");
-                        }
-                        if (Integer.parseInt(appointmentSlotDataModel.getFour()) < 5) {
-                            time.add("4pm - 6pm");
-                        }
-                        if (time == null) {
-                            time.add("No Time Slot Available");
-                        }
-                        ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(CreateAppointment.this, android.R.layout.simple_list_item_1, time);
-                        spinnerTime.setAdapter(timeAdapter);
-                        txtDate.setText("Selected Date: " + DateSelected);
-                        calendarDate.setVisibility(View.GONE);
-                        textViewTime.setVisibility(View.VISIBLE);
-                        btnBook.setVisibility(View.VISIBLE);
-                        btnSelectDate.setVisibility(View.GONE);
+                            AppointmentSlotDataModel appointmentSlotDataModel = appointmentSlotDataManager.GetSlotbyDate(DateSelectedFormat);
 
+                            spinnerTime.setVisibility(View.VISIBLE);
+                            if (Integer.parseInt(appointmentSlotDataModel.getEight()) < 5) {
+                                time.add("8am - 10am");
+                            }
+                            if (Integer.parseInt(appointmentSlotDataModel.getTen()) < 5) {
+                                time.add("10am - 12pm");
+                            }
+                            if (Integer.parseInt(appointmentSlotDataModel.getTwelve()) < 5) {
+                                time.add("12pm - 2pm");
+                            }
+                            if (Integer.parseInt(appointmentSlotDataModel.getTwo()) < 5) {
+                                time.add("2pm - 4pm");
+                            }
+                            if (Integer.parseInt(appointmentSlotDataModel.getFour()) < 5) {
+                                time.add("4pm - 6pm");
+                            }
+                            if (time == null) {
+                                time.add("No Time Slot Available");
+                            }
+                            ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(CreateAppointment.this, android.R.layout.simple_list_item_1, time);
+                            spinnerTime.setAdapter(timeAdapter);
+                            txtDate.setText("Selected Date: " + DateSelected);
+                            calendarDate.setVisibility(View.GONE);
+                            textViewTime.setVisibility(View.VISIBLE);
+                            btnBook.setVisibility(View.VISIBLE);
+                            btnSelectDate.setVisibility(View.GONE);
+
+                        }
                     }
                 }
             }
@@ -161,19 +162,19 @@ public class CreateAppointment extends AppCompatActivity {
                     bookingDataManager.AddBooking(session.getUserID(), DateSelectedFormat, selectedTime);
                     Toast.makeText(CreateAppointment.this, "Appointment Added!", Toast.LENGTH_SHORT).show();
 
-                    if (selectedTime == "8am-10am") {
+                    if (selectedTime.equals("8am - 10am")) {
                         slotEight = slotEight + 1;
                     }
-                    if (selectedTime == "10am - 12pm") {
+                    if (selectedTime.equals("10am - 12pm")) {
                         slotTen = slotTen + 1;
                     }
-                    if (selectedTime == "12pm - 2pm") {
+                    if (selectedTime.equals("12pm - 2pm")) {
                         slotTwelve = slotTwelve + 1;
                     }
-                    if (selectedTime == "2pm - 4pm") {
+                    if (selectedTime.equals("2pm - 4pm")) {
                         slotTwo = slotTwo + 1;
                     }
-                    if (selectedTime == "4pm - 6pm") {
+                    if (selectedTime.equals("4pm - 6pm")) {
                         slotFour = slotFour + 1;
                     }
 

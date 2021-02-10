@@ -24,7 +24,7 @@ import com.example.assignment.MainActivity;
 import com.example.assignment.R;
 import com.example.assignment.Session.Session;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements MasterFragmentBookings.BookingSelectedListener{
 
     TextView Welcome;
     Session session;
@@ -80,9 +80,16 @@ public class Home extends AppCompatActivity {
 //        fragmentTransaction.commit();
 //    }
 
-//    protected void showDetailFragmentOverMasterFragment(String selectedId) {
-//        DetailFragmentBooking newFragmentToShow = new DetailFragmentBooking();
-//        Bundle params = new Bundle();
-//        params.putString("BookingID");
-//    }
+    protected void showDetailFragmentOverMasterFragment(String selectedId) {
+        DetailFragmentBooking newFragmentToShow = new DetailFragmentBooking();
+        Bundle params = new Bundle();
+        params.putString("BookingID", selectedId);
+        newFragmentToShow.setArguments(params);
+        getSupportFragmentManager().beginTransaction().replace(R.id.FrameLayout, newFragmentToShow).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onBookingSelected(BookingDataModels bookingDataModels) {
+        showDetailFragmentOverMasterFragment(bookingDataModels.getId());
+    }
 }

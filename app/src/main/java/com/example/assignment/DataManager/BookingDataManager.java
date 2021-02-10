@@ -19,9 +19,12 @@ public class BookingDataManager {
 
     public BookingDataModels[] GetAllBookings(String AdminNo) {
 
+        //Initialize DB Connection
         connClass = new DBConnection();
 
+        //Open Connection
         conn = connClass.CONN();
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         Date Today = Calendar.getInstance().getTime();
@@ -43,6 +46,8 @@ public class BookingDataManager {
                 BookingDataModels bookingDataModels = new BookingDataModels(ID, date, time);
                 booking.add(bookingDataModels);
             }
+
+            //Close Result Set and Connection
             rs.close();
             conn.close();
             return booking.toArray(new BookingDataModels[0]);
@@ -54,8 +59,10 @@ public class BookingDataManager {
     }
 
     public BookingDataModels GetBookingbyDate(String SelectedDate, String AdminNo) {
+        //Initialize DB Connection
         connClass = new DBConnection();
 
+        //Open Connection
         conn = connClass.CONN();
 
         try {
@@ -73,6 +80,7 @@ public class BookingDataManager {
                 BookingDataModels bookingDataModels = new BookingDataModels(ID, date, time);
                 return bookingDataModels;
             }
+            //Close Result Set and Connection
             rs.close();
             conn.close();
 
@@ -83,8 +91,10 @@ public class BookingDataManager {
     }
 
     public BookingDataModels GetBookingById(String selectedId) {
+        //Initialize DB Connection
         connClass = new DBConnection();
 
+        //Open Connection
         conn = connClass.CONN();
 
         try {
@@ -101,6 +111,7 @@ public class BookingDataManager {
                 BookingDataModels bookingDataModels = new BookingDataModels(ID, date, time);
                 return bookingDataModels;
             }
+            //Close Result Set and Connection
             rs.close();
             conn.close();
 
@@ -112,7 +123,10 @@ public class BookingDataManager {
 
 
     public void AddBooking(String AdminNo, String SelectedDate, String Time) {
+        //Initialize DB Connection
         connClass = new DBConnection();
+
+        //Open Connection
         conn = connClass.CONN();
 
         String InsertQuery = "INSERT INTO Bookings(AdminNo, Date, Time, Attendance) VALUES (?,?,?,?)";
@@ -123,6 +137,7 @@ public class BookingDataManager {
             Insertstmt.setString(3, Time);
             Insertstmt.setString(4, "False");
             Insertstmt.executeUpdate();
+            //Close Connection
             conn.close();
 
         } catch (Exception e) {
@@ -131,6 +146,26 @@ public class BookingDataManager {
 
     }
 
-    public void DelBooking()
+    //Delete Booking
+    public void DelBooking(String ID){
+        //Initialize DB Connection
+        connClass = new DBConnection();
+
+        //Open Connection
+        conn = connClass.CONN();
+
+        //Delete SQL
+        String DeleteQuery = "DELETE Bookings WHERE ID=?";
+        try{
+            PreparedStatement Deletestmt = conn.prepareStatement(DeleteQuery);
+            Deletestmt.setString(1, ID);
+            Deletestmt.executeUpdate();
+
+            //Close Connection
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
