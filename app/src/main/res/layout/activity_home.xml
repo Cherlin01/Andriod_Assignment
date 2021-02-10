@@ -19,19 +19,12 @@
             android:fontFamily="casual"
             android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:typeface="normal" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="My Appointments"
-            android:textSize="16sp"
-            android:layout_marginBottom="10dp"/>
 
         <FrameLayout
             android:id="@+id/FrameLayout"
@@ -43,22 +36,22 @@
         <Button
             android:id="@+id/btnBookAppt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30sp"
             android:background="@drawable/round_button"
             android:backgroundTint="#5E00E1FF"
             android:fontFamily="@font/paprika"
-            android:textSize="14sp"
-            android:text="Book Appointment" />
+            android:text="Book Appointment"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30sp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/round_button"
             android:backgroundTint="#5E00E1FF"
-            android:layout_marginTop="10dp"
             android:fontFamily="@font/paprika"
-            android:textSize="14sp"
-            android:text="Logout" />
+            android:text="Logout"
+            android:textSize="14sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

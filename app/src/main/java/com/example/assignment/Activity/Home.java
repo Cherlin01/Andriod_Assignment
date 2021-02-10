@@ -1,26 +1,18 @@
 package com.example.assignment.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.assignment.Adapter.listAppointmentAdapter;
-import com.example.assignment.DataManager.BookingDataManager;
 import com.example.assignment.DataModel.BookingDataModels;
 import com.example.assignment.Fragment.DetailFragmentBooking;
-import com.example.assignment.Fragment.ItemSelectedFragment;
 import com.example.assignment.Fragment.MasterFragmentBookings;
-import com.example.assignment.MainActivity;
 import com.example.assignment.R;
 import com.example.assignment.Session.Session;
 
@@ -49,7 +41,7 @@ public class Home extends AppCompatActivity implements MasterFragmentBookings.Bo
             public void onClick(View v) {
                 Toast.makeText(Home.this, "Logout Successful!", Toast.LENGTH_SHORT).show();
                 session.setLogin(false);
-                Intent intent = new Intent(Home.this, MainActivity.class);
+                Intent intent = new Intent(Home.this, Login.class);
                 startActivity(intent);
             }
         });

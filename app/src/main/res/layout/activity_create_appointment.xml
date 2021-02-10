@@ -20,7 +20,9 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/courgette"
                 android:text="Book Appointment"
+                android:textAlignment="center"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
@@ -32,6 +34,7 @@
                 android:id="@+id/txtDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/tillana"
                 android:text="Select Date:"
                 android:textSize="18sp" />
 
@@ -43,12 +46,25 @@
             <Button
                 android:id="@+id/btnSelectDate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Select Date"
+                android:layout_height="30sp"
+                android:background="@drawable/round_button"
                 android:backgroundTint="#5E00E1FF"
                 android:fontFamily="@font/paprika"
-                android:textSize="14sp"
-                android:background="@drawable/round_button" />
+                android:text="Select Date"
+                android:textSize="14sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <Button
+                android:id="@+id/btnBacktoAllAppt"
+                android:layout_width="match_parent"
+                android:layout_height="30sp"
+                android:background="@drawable/round_button"
+                android:backgroundTint="#5E00E1FF"
+                android:fontFamily="@font/paprika"
+                android:text="Back to All Appointments" />
 
             <Space
                 android:layout_width="match_parent"
@@ -71,13 +87,28 @@
             <Button
                 android:id="@+id/btnbook"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Book Appointment"
-                android:visibility="gone"
+                android:layout_height="30sp"
+                android:background="@drawable/round_button"
                 android:backgroundTint="#5E00E1FF"
                 android:fontFamily="@font/paprika"
+                android:text="Book Appointment"
                 android:textSize="14sp"
-                android:background="@drawable/round_button" />
+                android:visibility="gone" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <Button
+                android:id="@+id/btnBackSelectDate"
+                android:layout_width="match_parent"
+                android:layout_height="30sp"
+                android:background="@drawable/round_button"
+                android:backgroundTint="#5E00E1FF"
+                android:fontFamily="@font/paprika"
+                android:text="Back"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>

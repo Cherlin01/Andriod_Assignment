@@ -27,15 +27,16 @@ public class DetailFragmentBooking extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //Initialize Variables and Find Elements
         View view = inflater.inflate(R.layout.detail_fragment_bookings, container, false);
         TextView textViewDate = view.findViewById(R.id.textViewDate);
         TextView textViewTime = view.findViewById(R.id.textViewTime);
         Button btnDel = view.findViewById(R.id.btnDelete);
+        Button btnBack = view.findViewById(R.id.btnBack);
         Bundle params = this.getArguments();
         final String selectedId = params.getString("BookingID");
         final BookingDataManager bookingDataManager = new BookingDataManager();
         final BookingDataModels selectedBooking = bookingDataManager.GetBookingById(selectedId);
-        final Session session = new Session(getContext());
         final String selectedTime = selectedBooking.getTime();
 
         if(selectedBooking != null){
@@ -43,15 +44,28 @@ public class DetailFragmentBooking extends Fragment {
             textViewTime.setText(selectedBooking.getTime());
         }
 
+        //Back to All Appointments
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentAppointment = new Intent(getContext(), Home.class);
+                startActivity(intentAppointment);
+            }
+        });
+
+        //Delete Appointment and Update Slot
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Delete Appointment
                 bookingDataManager.DelBooking(selectedId);
                 Toast.makeText(getContext(), "Appointment Deleted!", Toast.LENGTH_SHORT).show();
 
+                //Initialize AppointmentSlotDataManager
                 AppointmentSlotDataManager appointmentSlotDataManager = new AppointmentSlotDataManager();
                 AppointmentSlotDataModel SlotDate = appointmentSlotDataManager.GetSlotbyDate(selectedBooking.getDate());
 
+                //Get All Time Slots
                 Integer SlotEight = Integer.parseInt(SlotDate.getEight()),
                         SlotTen = Integer.parseInt(SlotDate.getTen()),
                         SlotTwelve = Integer.parseInt(SlotDate.getTwelve()),
@@ -59,6 +73,7 @@ public class DetailFragmentBooking extends Fragment {
                         SlotFour = Integer.parseInt(SlotDate.getFour());
 
 
+                //Set Selected Time Slot to -1
                 if (selectedTime.equals("8am - 10am")) {
                     SlotEight = SlotEight - 1;
                 }
@@ -75,8 +90,10 @@ public class DetailFragmentBooking extends Fragment {
                     SlotFour = SlotFour - 1;
                 }
 
+                //Update Time Slot
                 appointmentSlotDataManager.UpdateAppointmentSlot(selectedBooking.getDate(), SlotEight, SlotTen, SlotTwelve, SlotTwo, SlotFour);
 
+                //Intent Back to All Appointment
                 Intent intentAppointment = new Intent(getContext(), Home.class);
                 startActivity(intentAppointment);
             }

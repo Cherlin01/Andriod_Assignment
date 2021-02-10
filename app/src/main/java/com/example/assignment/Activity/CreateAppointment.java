@@ -29,9 +29,10 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class CreateAppointment extends AppCompatActivity {
+    //Initialize Variables
     CalendarView calendarDate;
     TextView textViewTime, txtDate;
-    Button btnBook, btnSelectDate;
+    Button btnBook, btnSelectDate, btnBacktoAllAppt, btnBacktoSelectDate;
     Spinner spinnerTime;
     Session session;
     ArrayList<String> time = new ArrayList<String>();
@@ -54,6 +55,9 @@ public class CreateAppointment extends AppCompatActivity {
         textViewTime = findViewById(R.id.textViewTime);
         txtDate = findViewById(R.id.txtDate);
         calendarDate = findViewById(R.id.calendarDate);
+        btnBacktoAllAppt = findViewById(R.id.btnBacktoAllAppt);
+        btnBacktoSelectDate = findViewById(R.id.btnBackSelectDate);
+
 
         //set Min and Max Date (within 2weeks)
         Calendar twoWeeksLater = Calendar.getInstance();
@@ -62,11 +66,12 @@ public class CreateAppointment extends AppCompatActivity {
         oneDayLater.add(Calendar.DATE, 1);
         calendarDate.setMinDate((oneDayLater.getTimeInMillis()));
         calendarDate.setMaxDate(twoWeeksLater.getTimeInMillis());
-        //calendarDate.setDate(oneDayLater.getTimeInMillis());
 
 
+        //Initialize Session
         session = new Session(CreateAppointment.this);
 
+        //Set Selected Date
         calendarDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -82,13 +87,24 @@ public class CreateAppointment extends AppCompatActivity {
             }
         });
 
+        //Back to All Appointments
+        btnBacktoAllAppt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentAppointment = new Intent(CreateAppointment.this, Home.class);
+                startActivity(intentAppointment);
+            }
+        });
 
+        //Select Date
         btnSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 time.clear();
                 AppointmentSlotDataManager appointmentSlotDataManager = new AppointmentSlotDataManager();
                 Calendar selectedDate = Calendar.getInstance();
+
+                //Validate Date
                 if (SelectedDateTime == null) {
                     Toast.makeText(CreateAppointment.this, "Please Select a Date", Toast.LENGTH_SHORT).show();
                 } else {
@@ -99,17 +115,21 @@ public class CreateAppointment extends AppCompatActivity {
                     if (Day == Calendar.SATURDAY || Day == Calendar.SUNDAY) {
                         Toast.makeText(CreateAppointment.this, "You cannot book an appointment on Weekends!", Toast.LENGTH_SHORT).show();
                     } else {
+                        //Check if User has bookings on that date
                         BookingDataManager bookingDataManager = new BookingDataManager();
                         BookingDataModels bookings = bookingDataManager.GetBookingbyDate(DateSelectedFormat, session.getUserID());
 
                         if (bookings != null) {
                             Toast.makeText(CreateAppointment.this, "You have an Appointment on this date!", Toast.LENGTH_SHORT).show();
                         } else {
+                            //Check if Appointment Slot has that Date, if not, Create new Date Slot
                             if (appointmentSlotDataManager.GetSlotbyDate(DateSelectedFormat) == null)
                                 appointmentSlotDataManager.AddAppointmentSlot(DateSelectedFormat);
 
                             AppointmentSlotDataModel appointmentSlotDataModel = appointmentSlotDataManager.GetSlotbyDate(DateSelectedFormat);
 
+
+                            //Add Time to Spinner based on availability.
                             spinnerTime.setVisibility(View.VISIBLE);
                             if (Integer.parseInt(appointmentSlotDataModel.getEight()) < 5) {
                                 time.add("8am - 10am");
@@ -130,12 +150,16 @@ public class CreateAppointment extends AppCompatActivity {
                                 time.add("No Time Slot Available");
                             }
                             ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(CreateAppointment.this, android.R.layout.simple_list_item_1, time);
+
+                            //Set Visibility
                             spinnerTime.setAdapter(timeAdapter);
                             txtDate.setText("Selected Date: " + DateSelected);
                             calendarDate.setVisibility(View.GONE);
                             textViewTime.setVisibility(View.VISIBLE);
                             btnBook.setVisibility(View.VISIBLE);
                             btnSelectDate.setVisibility(View.GONE);
+                            btnBacktoAllAppt.setVisibility(View.GONE);
+                            btnBacktoSelectDate.setVisibility(View.VISIBLE);
 
                         }
                     }
@@ -143,13 +167,31 @@ public class CreateAppointment extends AppCompatActivity {
             }
         });
 
+        //Back to Select Date
+        btnBacktoSelectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spinnerTime.setVisibility(View.GONE);
+                txtDate.setText("Select Date:");
+                calendarDate.setVisibility(View.VISIBLE);
+                textViewTime.setVisibility(View.GONE);
+                btnBook.setVisibility(View.GONE);
+                btnSelectDate.setVisibility(View.VISIBLE);
+                btnBacktoAllAppt.setVisibility(View.VISIBLE);
+                btnBacktoSelectDate.setVisibility(View.GONE);
+            }
+        });
+
+        //Book Appointment
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Initialize data manager
                 BookingDataManager bookingDataManager = new BookingDataManager();
                 AppointmentSlotDataManager appointmentSlotDataManager = new AppointmentSlotDataManager();
                 AppointmentSlotDataModel appointmentSlotDate = appointmentSlotDataManager.GetSlotbyDate(DateSelectedFormat);
 
+                //Get Time Slots
                 Integer slotEight = Integer.parseInt(appointmentSlotDate.getEight()),
                         slotTen = Integer.parseInt(appointmentSlotDate.getTen()),
                         slotTwelve = Integer.parseInt(appointmentSlotDate.getTwelve()),
@@ -158,6 +200,7 @@ public class CreateAppointment extends AppCompatActivity {
                 String slotTime = "";
                 String selectedTime = spinnerTime.getSelectedItem().toString();
 
+                //Update Selected time slot to +1
                 if (selectedTime != "No Time Slot Available") {
                     bookingDataManager.AddBooking(session.getUserID(), DateSelectedFormat, selectedTime);
                     Toast.makeText(CreateAppointment.this, "Appointment Added!", Toast.LENGTH_SHORT).show();
@@ -180,6 +223,7 @@ public class CreateAppointment extends AppCompatActivity {
 
                     appointmentSlotDataManager.UpdateAppointmentSlot(DateSelectedFormat, slotEight, slotTen, slotTwelve, slotTwo, slotFour);
 
+                    //Set Visibility
                     spinnerTime.setVisibility(View.GONE);
                     textViewTime.setVisibility(View.GONE);
                     btnBook.setVisibility(View.GONE);

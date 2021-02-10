@@ -1,4 +1,4 @@
-package com.example.assignment;
+package com.example.assignment.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,11 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.assignment.Activity.Home;
 import com.example.assignment.DataManager.LoginDataManager;
+import com.example.assignment.R;
 import com.example.assignment.Session.Session;
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     EditText txtUsername, txtPassword;
     Button BtnLogin;
@@ -23,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
-        session = new Session(MainActivity.this);
+        session = new Session(Login.this);
 
         txtUsername = findViewById(R.id.txtName);
         txtPassword = findViewById(R.id.txtPass);
@@ -43,14 +43,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String Status = LDM.GetLoginStatus(txtUsername.getText().toString(), txtPassword.getText().toString());
                 if(Status == null){
-                    Toast.makeText(MainActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Login Failed!", Toast.LENGTH_SHORT).show();
                 }
                 else if (Status.equals("Pass"))
                 {
-                    Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                     session.setLogin(true);
                     session.setUsername(txtUsername.getText().toString());
-                    Intent intent = new Intent(MainActivity.this, Home.class);
+                    Intent intent = new Intent(Login.this, Home.class);
                     startActivity(intent);
                 }
             }
