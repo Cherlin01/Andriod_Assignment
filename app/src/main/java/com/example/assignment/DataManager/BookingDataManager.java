@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class BookingDataManager {
+    //DB Connection
     DBConnection connClass;
     Connection conn;
 

@@ -9,13 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AppointmentSlotDataManager {
+    //DB Connection
     DBConnection connClass;
     Connection conn;
 
 
     public AppointmentSlotDataModel GetSlotbyDate(String SelectedDate) {
+        //Initialize DB Connection
         connClass = new DBConnection();
 
+        //Open Connection
         conn = connClass.CONN();
 
         try {
@@ -35,6 +38,7 @@ public class AppointmentSlotDataManager {
                 AppointmentSlotDataModel appointmentSlotDataModel = new AppointmentSlotDataModel(Date, Eight, Ten, Twelve, Two, Four);
                 return appointmentSlotDataModel;
             }
+            //Close Result Set and Connection
             rs.close();
             conn.close();
 
@@ -45,7 +49,10 @@ public class AppointmentSlotDataManager {
     }
 
     public void AddAppointmentSlot(String SelectedDate){
+        //Initialize DB Connection
         connClass = new DBConnection();
+
+        //Open Connection
         conn = connClass.CONN();
 
         String InsertQuery = "INSERT INTO AppointmentSlot(Date, Eight, Ten, Twelve, Two, Four) VALUES (?,?,?,?,?,?)";
@@ -58,6 +65,8 @@ public class AppointmentSlotDataManager {
             Insertstmt.setString(5, "0");
             Insertstmt.setString(6, "0");
             Insertstmt.executeUpdate();
+
+            //Close Connection
             conn.close();
 
         }catch (Exception e) {
@@ -67,7 +76,10 @@ public class AppointmentSlotDataManager {
     }
 
     public void UpdateAppointmentSlot(String SelectedDate, int Slot1, int Slot2, int Slot3, int Slot4, int Slot5){
+        //Initialize DB Connection
         connClass = new DBConnection();
+
+        //Open Connection
         conn = connClass.CONN();
 
         String UpdateQuery = "UPDATE AppointmentSlot SET Eight=?, Ten=?, Twelve=?, Two=?, Four=? WHERE Date=?";
@@ -80,6 +92,8 @@ public class AppointmentSlotDataManager {
             Updatestmt.setInt(5, Slot5);
             Updatestmt.setString(6, SelectedDate);
             Updatestmt.executeUpdate();
+
+            //Close Connection
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();

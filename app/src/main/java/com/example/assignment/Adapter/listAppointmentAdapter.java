@@ -32,10 +32,12 @@ public class listAppointmentAdapter extends ArrayAdapter {
             itemview = ((Activity)this.getContext()).getLayoutInflater().inflate(R.layout.list_appointment_adapter, null);
         }
 
+        //Find Elements
         final BookingDataModels bookingDataModels = data[position];
         TextView date = itemview.findViewById(R.id.textViewDate);
         TextView time = itemview.findViewById(R.id.textViewTime);
 
+        //Set Date and Time
         date.setText(bookingDataModels.getDate().toString());
         time.setText(bookingDataModels.getTime().toString());
 

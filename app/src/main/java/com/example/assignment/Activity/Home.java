@@ -18,6 +18,7 @@ import com.example.assignment.Session.Session;
 
 public class Home extends AppCompatActivity implements MasterFragmentBookings.BookingSelectedListener{
 
+    //Initialize Variables
     TextView Welcome;
     Session session;
     Button btnLogout, btnBook;
@@ -26,6 +27,7 @@ public class Home extends AppCompatActivity implements MasterFragmentBookings.Bo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Show Master Fragment and Find Elements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         showMasterFragment();
@@ -36,6 +38,7 @@ public class Home extends AppCompatActivity implements MasterFragmentBookings.Bo
         listBookings = findViewById(R.id.listAppointment);
 
 
+        //Logout
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,8 +50,10 @@ public class Home extends AppCompatActivity implements MasterFragmentBookings.Bo
         });
 
 
-        Welcome.setText("Welcome back," + session.getUserID());
+        //Set Welcome Text
+        Welcome.setText("Welcome back," + session.getUserID() + "!");
 
+        //Intent to Create Appointment
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,20 +63,13 @@ public class Home extends AppCompatActivity implements MasterFragmentBookings.Bo
         });
     }
 
+    //Show Master Fragment
     protected void showMasterFragment() {
         MasterFragmentBookings newFragmentToShow = new MasterFragmentBookings();
         getSupportFragmentManager().beginTransaction().replace(R.id.FrameLayout, newFragmentToShow).commit();
     }
 
-//    protected void showMasterFragment() {
-//        MasterFragmentBookings newFragmentToShow = new MasterFragmentBookings();
-//        //Fragment newFragmentToShow = this.getSupportFragmentManager().findFragmentById(R.id.FrameLayout);
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().replace(R.id.FrameLayout, newFragmentToShow);
-//        fragmentTransaction.detach(newFragmentToShow);
-//        fragmentTransaction.attach(newFragmentToShow);
-//        fragmentTransaction.commit();
-//    }
-
+    //Show Appointment Detail Fragment based on Selected ID
     protected void showDetailFragmentOverMasterFragment(String selectedId) {
         DetailFragmentBooking newFragmentToShow = new DetailFragmentBooking();
         Bundle params = new Bundle();

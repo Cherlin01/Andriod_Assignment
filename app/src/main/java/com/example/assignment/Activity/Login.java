@@ -15,6 +15,7 @@ import com.example.assignment.Session.Session;
 
 public class Login extends AppCompatActivity {
 
+    //Initialize Variables
     EditText txtUsername, txtPassword;
     Button BtnLogin;
     LoginDataManager LDM;
@@ -25,14 +26,17 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Initialize Session
         session = new Session(Login.this);
 
+        //Find Elements
         txtUsername = findViewById(R.id.txtName);
         txtPassword = findViewById(R.id.txtPass);
         BtnLogin = findViewById(R.id.btnLogin);
 
         LDM = new LoginDataManager();
 
+        //Login to Home Page
         if(session.getLogin())
         {
             startActivity(new Intent(getApplicationContext(), Home.class));
