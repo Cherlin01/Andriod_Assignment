@@ -33,11 +33,9 @@ public class listAppointmentAdapter extends ArrayAdapter {
         }
 
         final BookingDataModels bookingDataModels = data[position];
-        TextView id = itemview.findViewById(R.id.textViewID);
         TextView date = itemview.findViewById(R.id.textViewDate);
         TextView time = itemview.findViewById(R.id.textViewTime);
 
-        id.setText(bookingDataModels.getId().toString());
         date.setText(bookingDataModels.getDate().toString());
         time.setText(bookingDataModels.getTime().toString());
 

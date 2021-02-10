@@ -29,6 +29,11 @@
             android:id="@+id/btnDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delete Appointment" />
+            android:text="Delete Appointment"
+            android:backgroundTint="#5E00E1FF"
+            android:background="@drawable/round_button"
+            android:fontFamily="@font/paprika"
+            android:textSize="14sp"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

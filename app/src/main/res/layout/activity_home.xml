@@ -30,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="My Appointments"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:layout_marginBottom="10dp"/>
 
         <FrameLayout
             android:id="@+id/FrameLayout"
@@ -43,13 +44,21 @@
             android:id="@+id/btnBookAppt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/round_button"
+            android:backgroundTint="#5E00E1FF"
+            android:fontFamily="@font/paprika"
+            android:textSize="14sp"
             android:text="Book Appointment" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#5E00E1FF"
+            android:background="@drawable/round_button"
+            android:backgroundTint="#5E00E1FF"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/paprika"
+            android:textSize="14sp"
             android:text="Logout" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
